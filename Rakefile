@@ -15,23 +15,14 @@ task :compile do
   jarfiles << Gem.find_latest_files('esper-*.jar').first
 
   java_classpath = "-classpath src:java:#{jarfiles.join(':')}"
-  FileList['src/**/*.java'].each do |fn|
-    sh "env LC_ALL=C javac -J-Duser.language=en #{java_classpath} -d java #{fn}"
+  FileList['java/**/*.java'].each do |fn|
+    sh "env LC_ALL=C javac #{java_classpath} #{fn}"
   end
 
-  jruby_classpath = "--classpath java:#{jarfiles.join(':')}"
-  FileList['lib/esper_plugin/**/*.rb'].each do |fn|
-    sh "env LC_ALL=C jrubyc --javac --target java #{jruby_classpath} #{fn}"
-  end
-
-  sh "env LC_ALL=C jar -J-Duser.language=en -cf jar/#{jarname} -C java ."
-end
-
-task :clean do
-  sh "rm -rf java/*"
+  sh "env LC_ALL=C jar -cf jar/#{jarname} -C java ."
 end
 
 task :test => [:compile, :spec]
 task :default => :test
 
-task :all => [:clean, :compile, :spec, :build]
+task :all => [:compile, :spec, :build]
