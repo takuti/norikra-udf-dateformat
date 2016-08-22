@@ -2,6 +2,11 @@
 
 Norikra UDF for flexible date formatting.
 
+This UDF works on the following environment:
+
+- Norikra 1.4.0
+- Java 8
+
 ## Installation
 
 On JRuby which Norikra runs:
